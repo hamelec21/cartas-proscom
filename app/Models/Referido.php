@@ -21,6 +21,6 @@ class Referido extends Model
 
     public function ventas()
     {
-        return $this->hasMany(VentaReferido::class);
+        return $this->hasMany(Venta_Referido::class);
     }
 }
