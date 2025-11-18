@@ -7,16 +7,19 @@ use App\Filament\Resources\VentaReferidos\Pages\EditVentaReferido;
 use App\Filament\Resources\VentaReferidos\Pages\ListVentaReferidos;
 use App\Filament\Resources\VentaReferidos\Schemas\VentaReferidoForm;
 use App\Filament\Resources\VentaReferidos\Tables\VentaReferidosTable;
-use App\Models\VentaReferido;
+use App\Models\Venta_Referido;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class VentaReferidoResource extends Resource
 {
-    protected static ?string $model = VentaReferido::class;
+    protected static string | UnitEnum | null $navigationGroup = 'Vendedores';
+
+    protected static ?string $model = Venta_Referido::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
