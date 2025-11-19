@@ -16,7 +16,8 @@ class Referido extends Model
         'numero_cuenta',
         'rut',
         'link_generado',
-        'estado'
+        'estado',
+        'acepta_terminos'
     ];
 
     public function ventas()

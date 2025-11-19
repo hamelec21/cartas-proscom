@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Referido;
 use App\Models\Venta_Referido;
+use App\Mail\ReferidoRegistrado;
+use Illuminate\Support\Facades\Mail;
 
 class ReferidoController extends Controller
 {
@@ -26,17 +28,32 @@ class ReferidoController extends Controller
         $request->validate([
             'nombre' => 'required',
             'alias' => 'required|unique:referidos,alias',
+            'email' => 'required|email',
+            'whatsapp' => 'required',
+            'banco' => 'required',
+            'tipo_cuenta' => 'required',
+            'numero_cuenta' => 'required',
+            'rut' => 'required',
+            'acepta_terminos' => 'required',
         ]);
 
-        $ref = Referido::create($request->all());
+        $data = $request->all();
+        $data['estado'] = 'activo'; // Valor por defecto
 
-        // Generar el link automáticamente
+        $ref = Referido::create($data);
+
+        // Generar link automáticamente
         $ref->link_generado = "https://cartadigitalpro.vercel.app/?ref=" . $ref->alias;
         $ref->save();
 
-        return back()->with('ok', 'Referido creado con link: ' . $ref->link_generado);
-    }
+        // Enviar correo al referido
+        Mail::to($ref->email)->send(new ReferidoRegistrado($ref->nombre, $ref->link_generado));
 
+        return response()->json([
+            'ok' => true,
+            'mensaje' => 'Referido creado con éxito y correo enviado'
+        ], 200, ['Content-Type' => 'application/json']);
+    }
     /**
      * Registrar venta enviada desde la landing
      */
@@ -56,7 +73,7 @@ class ReferidoController extends Controller
             'email' => $request->email,
             'referido_id' => $ref?->id, // Null si no existe
             'monto' => 29970,
-            'comision' => 3000, // comision del 10% $2997 se redondea a $3.000
+            'comision' => 5000, // comision del 20% $29.970 se redondea a $5.000
         ]);
 
         return response()->json([

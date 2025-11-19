@@ -9,4 +9,7 @@ use App\Http\Controllers\Api\LeadController;
 
 Route::get('/restaurantes/{slug}', [CartaController::class, 'show']);
 Route::post('/registrar-venta', [ReferidoController::class, 'registrarVenta']);
+
 Route::post('/pre-registro', [LeadController::class, 'store']);
+
+Route::post('/referidos', [ReferidoController::class, 'store']);
