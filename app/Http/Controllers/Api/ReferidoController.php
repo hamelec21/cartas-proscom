@@ -42,7 +42,12 @@ class ReferidoController extends Controller
 
         $ref = Referido::create($data);
 
-        // Generar link automáticamente
+        // Generar link automáticamente test local
+        //$ref->link_generado = "http://localhost:3000/?ref=" . $ref->alias;
+        //$ref->save();
+
+
+        // Generar link automáticamente produccion
         $ref->link_generado = "https://cartadigitalpro.vercel.app/?ref=" . $ref->alias;
         $ref->save();
 
@@ -54,9 +59,12 @@ class ReferidoController extends Controller
             'mensaje' => 'Referido creado con éxito y correo enviado'
         ], 200, ['Content-Type' => 'application/json']);
     }
+
+
     /**
      * Registrar venta enviada desde la landing
      */
+
     public function registrarVenta(Request $request)
     {
         $request->validate([
