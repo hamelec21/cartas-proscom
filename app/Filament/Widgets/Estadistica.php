@@ -8,9 +8,12 @@ use App\Models\Restaurante;
 use App\Models\User;
 use App\Models\Categoria;
 use App\Models\Producto;
+use App\Models\Referido;
+use App\Models\Venta_Referido;
 
 class Estadistica extends StatsOverviewWidget
 {
+     protected static ?int $sort = 0;
     protected function getStats(): array
     {
         return [
@@ -33,6 +36,16 @@ class Estadistica extends StatsOverviewWidget
                 ->description('Cantidad total de productos')
                 ->icon('heroicon-m-cube') // Icono de producto
                 ->color('danger'),
+
+            Stat::make('Referidos', Referido::count())
+                ->description('Referidos registrados')
+                ->icon('heroicon-m-user') // Icono
+                ->color('success'),
+
+                 Stat::make('Venta Referido', Venta_Referido::count())
+                ->description('Ventas Referidos')
+                ->icon('heroicon-m-user') // Icono
+                ->color('success'),
         ];
     }
 }
