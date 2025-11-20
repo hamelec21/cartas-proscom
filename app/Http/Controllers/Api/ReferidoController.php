@@ -105,10 +105,27 @@ class ReferidoController extends Controller
      */
     public function marcarPagado($id)
     {
-        $venta = Venta_Referido::findOrFail($id);
+        $venta = Venta_Referido::with('referido')->findOrFail($id);
+
+        // Validar si ya estaba pagada
+        if ($venta->estado_pago === 'pagado') {
+            return back()->with('info', 'Esta comisión ya fue marcada como pagada anteriormente.');
+        }
+
+        // Cambiar estado a pagado
         $venta->estado_pago = 'pagado';
         $venta->save();
 
-        return back()->with('ok', 'Comisión marcada como pagada');
+        // Intentar enviar el email
+        try {
+            if ($venta->referido && $venta->referido->email) {
+                Mail::to($venta->referido->email)
+                    ->send(new \App\Mail\VentaPagadaReferido($venta));
+            }
+        } catch (\Exception $e) {
+            return back()->with('error', 'Comisión se marcó como pagada, pero ocurrió un error al enviar el correo.');
+        }
+
+        return back()->with('ok', 'Comisión marcada como pagada y correo enviado al referido.');
     }
 }

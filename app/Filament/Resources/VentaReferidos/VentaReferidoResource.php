@@ -9,10 +9,12 @@ use App\Filament\Resources\VentaReferidos\Schemas\VentaReferidoForm;
 use App\Filament\Resources\VentaReferidos\Tables\VentaReferidosTable;
 use App\Models\Venta_Referido;
 use BackedEnum;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Mail;
 use UnitEnum;
 
 class VentaReferidoResource extends Resource
@@ -41,6 +43,10 @@ class VentaReferidoResource extends Resource
             //
         ];
     }
+
+   
+
+
 
     public static function getPages(): array
     {
