@@ -16,14 +16,25 @@ class VentaReferidosTable
         return $table
             ->columns([
 
-                TextColumn::make('cliente')
-                    ->label('Cliente')
-                    ->searchable()
+
+                TextColumn::make('referido.nombre')
+                    ->label('Partners')
+                    ->searchable(),
+
+
+                TextColumn::make('referido.alias')
+                    ->label('Referido')
+                    ->badge()
+                    ->color('primary')
                     ->sortable(),
 
-                TextColumn::make('email')
-                    ->label('Email')
-                    ->searchable(),
+
+                TextColumn::make('referido.link_generado')
+                    ->label('url')
+                    ->badge()
+                    ->color('success')
+                    ->sortable(),
+
 
                 TextColumn::make('monto')
                     ->label('Monto')
