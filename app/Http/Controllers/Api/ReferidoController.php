@@ -54,6 +54,10 @@ class ReferidoController extends Controller
         // Enviar correo al referido
         Mail::to($ref->email)->send(new ReferidoRegistrado($ref->nombre, $ref->link_generado));
 
+        // Enviar correo al administrador
+        // Usamos una dirección fija o la del remitente global por ahora
+        Mail::to('jcornejo@proscom.cl')->send(new \App\Mail\NuevoReferidoAdmin($ref));
+
         return response()->json([
             'ok' => true,
             'mensaje' => 'Referido creado con éxito y correo enviado'
@@ -83,6 +87,13 @@ class ReferidoController extends Controller
             'monto' => 29970,
             'comision' => 5000, // comision del 20% $29.970 se redondea a $5.000
         ]);
+
+        // Enviar correo al administrador
+        try {
+            Mail::to('jcorrea@proscom.cl')->send(new \App\Mail\NuevaVentaAdmin($venta));
+        } catch (\Exception $e) {
+            // Log error or ignore to not break the response
+        }
 
         return response()->json([
             'ok' => true,
